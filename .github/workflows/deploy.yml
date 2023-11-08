@@ -1,0 +1,38 @@
+name: jest-ReactJs
+run-name: ${{github.actor}} is learning using jest to test ReactJs
+on:
+  push:
+    branches:
+      - dev
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+  pages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checks out your repository onto the runner. You should use the checkout anytime your workflow will use the repository
+        uses: actions/checkout@v4
+      - name: Install modules
+        run: npm install
+      - name: Testing before building
+        run: npm test
+      - name: Build
+        run: npm build
+
+      - name: Set up pages
+        uses: actions/configure-pages@v3
+      - name: Upload dist folder
+        uses: actions/update-pages-artifact@v1
+        with:
+          path: './dist'
+      - name: Deploy to Github pages
+        uses: actions/deploy-pages@v1
+      - name: Deploy React App
+        id: deployment
+        uses: actions/deploy-pages@v1
